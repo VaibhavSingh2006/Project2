@@ -154,3 +154,61 @@ faceToggle.addEventListener('change', async () => {
 
 
 
+
+const video = document.getElementById('webcam');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(stream => {
+    video.srcObject = stream;
+  });
+
+function captureAndSendFrame() {
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  ctx.drawImage(video, 0, 0);
+
+  canvas.toBlob(async (blob) => {
+    const formData = new FormData();
+    formData.append('image', blob, 'frame.jpg');
+
+    const response = await fetch('http://localhost:5000/predict', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await response.json();
+    console.log('Detected emotion:', data.emotion);
+
+    // 🎵 Play song based on emotion
+    playSong(data.emotion);
+  }, 'image/jpeg');
+}
+
+// Call every 5 seconds
+setInterval(captureAndSendFrame, 5000);
+
+function playSong(emotion) {
+  const audio = new Audio();
+
+  switch (emotion) {
+    case 'happy':
+      audio.src = 'songs/happy.mp3';
+      break;
+    case 'sad':
+      audio.src = 'songs/sad.mp3';
+      break;
+    case 'angry':
+      audio.src = 'songs/angry.mp3';
+      break;
+    // Add more cases as needed
+    default:
+      console.log("No valid emotion detected");
+      return;
+  }
+
+  audio.play();
+}
+
+
