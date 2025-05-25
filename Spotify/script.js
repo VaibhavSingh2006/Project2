@@ -3,8 +3,11 @@ const songs = [
   { name: "Happy 1", file: "music/happy/ha1.mp3" },
   { name: "Happy 2", file: "music/happy/ha2.mp3" },
   { name: "Angry 1", file: "music/angry/an1.mp3" },
+  { name: "Angry 2", file: "music/angry/an2.mp3" },
   { name: "Sad 1", file: "music/sad/sa1.mp3" },
-  { name: "Sad 2", file: "music/sad/sa2.mp3" }
+  { name: "Sad 2", file: "music/sad/sa2.mp3" },
+  { name: "neutral 1", file: "music/neutral/n1.mp3" },
+  { name: "neutral 2", file: "music/neutral/n2.mp3" }
 ];
 
 let currentSongIndex = 0;
